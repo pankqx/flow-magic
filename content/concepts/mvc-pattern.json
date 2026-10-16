@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "id": "mvc-pattern",
+  "title": "Model-View-Controller pattern",
+  "summary": "The controller handles input, the model holds data and rules, and the view displays the result.",
+  "category": "software-engineering",
+  "aliases": [
+    "mvc",
+    "mvc pattern",
+    "model view controller",
+    "mvc architecture"
+  ],
+  "keywords": [
+    "mvc",
+    "model",
+    "view",
+    "controller",
+    "pattern"
+  ],
+  "visual": {
+    "title": "Model-View-Controller",
+    "description": "The user's input goes to the controller. The controller updates the model. The model notifies the view. The view renders the interface back to the user.",
+    "type": "flow",
+    "nodes": [
+      {
+        "id": "user",
+        "label": "User",
+        "col": 1,
+        "row": 2,
+        "kind": "external",
+        "step": 1
+      },
+      {
+        "id": "controller",
+        "label": "Controller",
+        "col": 1,
+        "row": 1,
+        "kind": "process",
+        "step": 2
+      },
+      {
+        "id": "model",
+        "label": "Model",
+        "col": 2,
+        "row": 1,
+        "kind": "store",
+        "step": 3
+      },
+      {
+        "id": "view",
+        "label": "View",
+        "col": 2,
+        "row": 2,
+        "kind": "output",
+        "step": 4
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "from": "user",
+        "to": "controller",
+        "label": "Input",
+        "step": 1
+      },
+      {
+        "id": "e2",
+        "from": "controller",
+        "to": "model",
+        "label": "Update",
+        "step": 2
+      },
+      {
+        "id": "e3",
+        "from": "model",
+        "to": "view",
+        "label": "Notify",
+        "step": 3
+      },
+      {
+        "id": "e4",
+        "from": "view",
+        "to": "user",
+        "label": "Render",
+        "step": 4
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

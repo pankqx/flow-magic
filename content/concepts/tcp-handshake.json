@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "tcp-handshake",
+  "title": "TCP three-way handshake",
+  "summary": "Client and server exchange SYN, SYN-ACK and ACK to open a reliable TCP connection.",
+  "category": "networking",
+  "aliases": [
+    "tcp handshake",
+    "tcp three way handshake",
+    "three way handshake",
+    "handshake",
+    "syn ack"
+  ],
+  "keywords": [
+    "tcp",
+    "syn",
+    "ack",
+    "handshake",
+    "connection",
+    "packet",
+    "ip"
+  ],
+  "visual": {
+    "title": "TCP three-way handshake",
+    "description": "The client sends SYN to the server. The server replies SYN-ACK. The client replies ACK. The connection is now established and data can be sent in both directions.",
+    "type": "sequence",
+    "actors": [
+      {
+        "id": "client",
+        "label": "Client"
+      },
+      {
+        "id": "server",
+        "label": "Server"
+      }
+    ],
+    "messages": [
+      {
+        "id": "m1",
+        "from": "client",
+        "to": "server",
+        "label": "SYN (let's connect)",
+        "step": 1
+      },
+      {
+        "id": "m2",
+        "from": "server",
+        "to": "client",
+        "label": "SYN-ACK (OK, let's connect)",
+        "step": 2
+      },
+      {
+        "id": "m3",
+        "from": "client",
+        "to": "server",
+        "label": "ACK (confirmed)",
+        "step": 3
+      },
+      {
+        "id": "m4",
+        "from": "client",
+        "to": "server",
+        "label": "Data (connection established)",
+        "step": 4
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

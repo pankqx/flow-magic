@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://flow-and-magic.dev/schemas/concept.schema.json",
+  "title": "Flow & Magic concept entry",
+  "description": "One curated concept: how it is matched (aliases, keywords) and the visual descriptor that renders it. Schema version 1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "title", "summary", "category", "aliases", "keywords", "visual", "provenance"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/slug" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "category": { "enum": ["networking", "software-engineering", "science"] },
+    "aliases": { "type": "array", "minItems": 1, "maxItems": 20, "uniqueItems": true, "items": { "type": "string", "minLength": 1, "maxLength": 60 } },
+    "keywords": { "type": "array", "minItems": 1, "maxItems": 30, "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z0-9]+$" } },
+    "visual": { "$ref": "#/$defs/visual" },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "license", "author"],
+      "properties": {
+        "origin": { "enum": ["original", "adapted", "generated"] },
+        "license": { "type": "string", "minLength": 1 },
+        "author": { "type": "string", "minLength": 1 },
+        "sourceUrl": { "type": "string", "format": "uri" }
+      }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "maxLength": 60 },
+    "step": { "type": "integer", "minimum": 1, "maximum": 50 },
+    "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "visual": {
+      "type": "object",
+      "required": ["type", "title", "description"],
+      "properties": {
+        "type": { "enum": ["flow", "sequence", "cycle", "layers"] },
+        "title": { "$ref": "#/$defs/label" },
+        "description": { "type": "string", "minLength": 20, "maxLength": 600, "description": "Full textual explanation; used as the accessible description of the visual." }
+      },
+      "oneOf": [
+        { "$ref": "#/$defs/flow" },
+        { "$ref": "#/$defs/sequence" },
+        { "$ref": "#/$defs/cycle" },
+        { "$ref": "#/$defs/layers" }
+      ]
+    },
+    "flow": {
+      "type": "object",
+      "required": ["type", "title", "description", "nodes", "edges"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "flow" }, "title": true, "description": true,
+        "nodes": {
+          "type": "array", "minItems": 2, "maxItems": 12,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "label", "col", "row", "step"],
+            "properties": {
+              "id": { "$ref": "#/$defs/slug" }, "label": { "$ref": "#/$defs/label" },
+              "col": { "type": "integer", "minimum": 1, "maximum": 6 },
+              "row": { "type": "integer", "minimum": 1, "maximum": 4 },
+              "kind": { "enum": ["process", "store", "external", "output"], "default": "process" },
+              "step": { "$ref": "#/$defs/step" }
+            }
+          }
+        },
+        "edges": {
+          "type": "array", "minItems": 1, "maxItems": 20,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["id", "from", "to", "step"],
+            "properties": {
+              "id": { "$ref": "#/$defs/slug" }, "from": { "$ref": "#/$defs/slug" }, "to": { "$ref": "#/$defs/slug" },
+              "label": { "type": "string", "maxLength": 40 }, "step": { "$ref": "#/$defs/step" }
+            }
+          }
+        }
+      }
+    },
+    "sequence": {
+      "type": "object",
+      "required": ["type", "title", "description", "actors", "messages"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "sequence" }, "title": true, "description": true,
+        "actors": {
+          "type": "array", "minItems": 2, "maxItems": 6,
+          "items": { "type": "object", "additionalProperties": false, "required": ["id", "label"],
+            "properties": { "id": { "$ref": "#/$defs/slug" }, "label": { "$ref": "#/$defs/label" } } }
+        },
+        "messages": {
+          "type": "array", "minItems": 1, "maxItems": 20,
+          "items": { "type": "object", "additionalProperties": false, "required": ["id", "from", "to", "label", "step"],
+            "properties": { "id": { "$ref": "#/$defs/slug" }, "from": { "$ref": "#/$defs/slug" }, "to": { "$ref": "#/$defs/slug" },
+              "label": { "$ref": "#/$defs/label" }, "step": { "$ref": "#/$defs/step" } } }
+        }
+      }
+    },
+    "cycle": {
+      "type": "object",
+      "required": ["type", "title", "description", "nodes"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "cycle" }, "title": true, "description": true,
+        "direction": { "enum": ["clockwise", "counterclockwise"], "default": "clockwise" },
+        "nodes": {
+          "type": "array", "minItems": 3, "maxItems": 8,
+          "items": { "type": "object", "additionalProperties": false, "required": ["id", "label", "step"],
+            "properties": { "id": { "$ref": "#/$defs/slug" }, "label": { "$ref": "#/$defs/label" },
+              "detail": { "type": "string", "maxLength": 120 }, "step": { "$ref": "#/$defs/step" } } }
+        }
+      }
+    },
+    "layers": {
+      "type": "object",
+      "required": ["type", "title", "description", "layers"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "const": "layers" }, "title": true, "description": true,
+        "layers": {
+          "type": "array", "minItems": 2, "maxItems": 10,
+          "items": { "type": "object", "additionalProperties": false, "required": ["id", "label", "step"],
+            "properties": { "id": { "$ref": "#/$defs/slug" }, "label": { "$ref": "#/$defs/label" },
+              "detail": { "type": "string", "maxLength": 120 }, "step": { "$ref": "#/$defs/step" } } }
+        }
+      }
+    }
+  }
+}

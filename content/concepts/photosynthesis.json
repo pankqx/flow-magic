@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "id": "photosynthesis",
+  "title": "Photosynthesis",
+  "summary": "Plants use light, water and carbon dioxide to make glucose and release oxygen.",
+  "category": "science",
+  "aliases": [
+    "photosynthesis",
+    "how plants make food"
+  ],
+  "keywords": [
+    "photosynthesis",
+    "plant",
+    "plants",
+    "chlorophyll",
+    "sunlight",
+    "oxygen",
+    "glucose"
+  ],
+  "visual": {
+    "title": "Photosynthesis",
+    "description": "In the chloroplast, light energy, water from the roots and carbon dioxide from the air are converted into glucose and oxygen.",
+    "type": "flow",
+    "nodes": [
+      {
+        "id": "light",
+        "label": "Sunlight",
+        "col": 1,
+        "row": 1,
+        "kind": "external",
+        "step": 1
+      },
+      {
+        "id": "water",
+        "label": "Water (from roots)",
+        "col": 1,
+        "row": 2,
+        "kind": "external",
+        "step": 2
+      },
+      {
+        "id": "co2",
+        "label": "Carbon dioxide (from air)",
+        "col": 1,
+        "row": 3,
+        "kind": "external",
+        "step": 3
+      },
+      {
+        "id": "chloro",
+        "label": "Chloroplast",
+        "col": 2,
+        "row": 2,
+        "kind": "process",
+        "step": 4
+      },
+      {
+        "id": "glucose",
+        "label": "Glucose (food)",
+        "col": 3,
+        "row": 1,
+        "kind": "output",
+        "step": 5
+      },
+      {
+        "id": "oxygen",
+        "label": "Oxygen (released)",
+        "col": 3,
+        "row": 3,
+        "kind": "output",
+        "step": 6
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "from": "light",
+        "to": "chloro",
+        "label": "Light energy",
+        "step": 1
+      },
+      {
+        "id": "e2",
+        "from": "water",
+        "to": "chloro",
+        "label": "H₂O",
+        "step": 2
+      },
+      {
+        "id": "e3",
+        "from": "co2",
+        "to": "chloro",
+        "label": "CO₂",
+        "step": 3
+      },
+      {
+        "id": "e4",
+        "from": "chloro",
+        "to": "glucose",
+        "label": "Makes",
+        "step": 4
+      },
+      {
+        "id": "e5",
+        "from": "chloro",
+        "to": "oxygen",
+        "label": "Releases",
+        "step": 5
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

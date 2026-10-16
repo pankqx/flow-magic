@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "id": "agile-scrum",
+  "title": "Agile Scrum cycle",
+  "summary": "A repeating loop of planning, building, reviewing and improving in fixed-length sprints.",
+  "category": "software-engineering",
+  "aliases": [
+    "scrum",
+    "agile",
+    "agile scrum",
+    "scrum sprint",
+    "sprint cycle"
+  ],
+  "keywords": [
+    "agile",
+    "scrum",
+    "sprint",
+    "backlog",
+    "retrospective",
+    "standup"
+  ],
+  "visual": {
+    "title": "Agile Scrum cycle",
+    "description": "The team starts from the product backlog, holds sprint planning, runs the sprint with daily scrums, holds a sprint review, then a retrospective, and returns to the backlog to refine it.",
+    "type": "cycle",
+    "direction": "clockwise",
+    "nodes": [
+      {
+        "id": "backlog",
+        "label": "Product backlog",
+        "detail": "Ordered list of work",
+        "step": 1
+      },
+      {
+        "id": "planning",
+        "label": "Sprint planning",
+        "detail": "Choose work for the sprint",
+        "step": 2
+      },
+      {
+        "id": "sprint",
+        "label": "Sprint",
+        "detail": "Build, with a daily scrum",
+        "step": 3
+      },
+      {
+        "id": "review",
+        "label": "Sprint review",
+        "detail": "Show the increment to stakeholders",
+        "step": 4
+      },
+      {
+        "id": "retro",
+        "label": "Retrospective",
+        "detail": "Improve how the team works",
+        "step": 5
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

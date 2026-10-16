@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "id": "git-workflow",
+  "title": "Git basic workflow",
+  "summary": "Changes move from the working directory to the staging area, local repository and remote repository.",
+  "category": "software-engineering",
+  "aliases": [
+    "git",
+    "git workflow",
+    "git basics",
+    "git add commit push",
+    "staging area"
+  ],
+  "keywords": [
+    "git",
+    "commit",
+    "push",
+    "pull",
+    "branch",
+    "repository",
+    "repo",
+    "merge",
+    "version"
+  ],
+  "visual": {
+    "title": "Git basic workflow",
+    "description": "Edits start in the working directory. git add moves them to the staging area. git commit records them in the local repository. git push sends them to the remote repository.",
+    "type": "flow",
+    "nodes": [
+      {
+        "id": "work",
+        "label": "Working directory",
+        "col": 1,
+        "row": 1,
+        "kind": "process",
+        "step": 1
+      },
+      {
+        "id": "stage",
+        "label": "Staging area",
+        "col": 2,
+        "row": 1,
+        "kind": "process",
+        "step": 2
+      },
+      {
+        "id": "local",
+        "label": "Local repository",
+        "col": 3,
+        "row": 1,
+        "kind": "store",
+        "step": 3
+      },
+      {
+        "id": "remote",
+        "label": "Remote repository",
+        "col": 4,
+        "row": 1,
+        "kind": "store",
+        "step": 4
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "from": "work",
+        "to": "stage",
+        "label": "git add",
+        "step": 1
+      },
+      {
+        "id": "e2",
+        "from": "stage",
+        "to": "local",
+        "label": "git commit",
+        "step": 2
+      },
+      {
+        "id": "e3",
+        "from": "local",
+        "to": "remote",
+        "label": "git push",
+        "step": 3
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "id": "http-request-response",
+  "title": "HTTP request and response",
+  "summary": "A browser asks a web server for a resource and the server answers with a status and content.",
+  "category": "networking",
+  "aliases": [
+    "http",
+    "http request",
+    "http response",
+    "http request and response",
+    "request response cycle"
+  ],
+  "keywords": [
+    "http",
+    "request",
+    "response",
+    "get",
+    "post",
+    "status",
+    "web",
+    "page"
+  ],
+  "visual": {
+    "title": "HTTP request and response",
+    "description": "A browser sends an HTTP GET request for a page to a web server. The server replies with status 200 OK and the HTML. The browser then requests the stylesheet and the server replies with the CSS.",
+    "type": "sequence",
+    "actors": [
+      {
+        "id": "client",
+        "label": "Browser"
+      },
+      {
+        "id": "server",
+        "label": "Web server"
+      }
+    ],
+    "messages": [
+      {
+        "id": "m1",
+        "from": "client",
+        "to": "server",
+        "label": "GET /index.html (request)",
+        "step": 1
+      },
+      {
+        "id": "m2",
+        "from": "server",
+        "to": "client",
+        "label": "200 OK + HTML (response)",
+        "step": 2
+      },
+      {
+        "id": "m3",
+        "from": "client",
+        "to": "server",
+        "label": "GET /style.css (request)",
+        "step": 3
+      },
+      {
+        "id": "m4",
+        "from": "server",
+        "to": "client",
+        "label": "200 OK + CSS (response)",
+        "step": 4
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

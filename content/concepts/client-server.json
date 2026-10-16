@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "id": "client-server",
+  "title": "Client-server architecture",
+  "summary": "Clients send requests to a server, which may use a cache and a database to answer them.",
+  "category": "software-engineering",
+  "aliases": [
+    "client server",
+    "client server architecture",
+    "client server model",
+    "frontend backend"
+  ],
+  "keywords": [
+    "client",
+    "server",
+    "backend",
+    "frontend",
+    "api",
+    "database",
+    "architecture"
+  ],
+  "visual": {
+    "title": "Client-server architecture",
+    "description": "A client app sends a request to an API server. The server checks a cache first and queries the database when the data is not cached. The server then sends a response back to the client.",
+    "type": "flow",
+    "nodes": [
+      {
+        "id": "client",
+        "label": "Client app",
+        "col": 1,
+        "row": 1,
+        "kind": "external",
+        "step": 1
+      },
+      {
+        "id": "server",
+        "label": "API server",
+        "col": 2,
+        "row": 1,
+        "kind": "process",
+        "step": 2
+      },
+      {
+        "id": "cache",
+        "label": "Cache",
+        "col": 2,
+        "row": 2,
+        "kind": "store",
+        "step": 3
+      },
+      {
+        "id": "db",
+        "label": "Database",
+        "col": 3,
+        "row": 1,
+        "kind": "store",
+        "step": 4
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "from": "client",
+        "to": "server",
+        "label": "Request",
+        "step": 1
+      },
+      {
+        "id": "e2",
+        "from": "server",
+        "to": "cache",
+        "label": "Check cache first",
+        "step": 2
+      },
+      {
+        "id": "e3",
+        "from": "server",
+        "to": "db",
+        "label": "Query on cache miss",
+        "step": 3
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

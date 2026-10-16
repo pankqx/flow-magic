@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "dns-resolution",
+  "title": "DNS resolution",
+  "summary": "A resolver walks from root to TLD to authoritative servers to turn a domain name into an IP address.",
+  "category": "networking",
+  "aliases": [
+    "dns",
+    "dns resolution",
+    "dns lookup",
+    "domain name system",
+    "how dns works"
+  ],
+  "keywords": [
+    "dns",
+    "domain",
+    "lookup",
+    "resolver",
+    "nameserver",
+    "ip",
+    "address",
+    "website"
+  ],
+  "visual": {
+    "title": "DNS resolution",
+    "description": "The browser asks a recursive resolver for the IP of example.com. The resolver asks a root server, which points to the .com TLD server. The TLD server points to the authoritative server for example.com, which returns the IP address. The resolver returns the IP to the browser and caches it.",
+    "type": "sequence",
+    "actors": [
+      {
+        "id": "browser",
+        "label": "Browser"
+      },
+      {
+        "id": "resolver",
+        "label": "Recursive resolver"
+      },
+      {
+        "id": "root",
+        "label": "Root server"
+      },
+      {
+        "id": "tld",
+        "label": ".com TLD server"
+      },
+      {
+        "id": "auth",
+        "label": "Authoritative server"
+      }
+    ],
+    "messages": [
+      {
+        "id": "m1",
+        "from": "browser",
+        "to": "resolver",
+        "label": "Where is example.com?",
+        "step": 1
+      },
+      {
+        "id": "m2",
+        "from": "resolver",
+        "to": "root",
+        "label": "example.com?",
+        "step": 2
+      },
+      {
+        "id": "m3",
+        "from": "root",
+        "to": "resolver",
+        "label": "Ask the .com TLD server",
+        "step": 3
+      },
+      {
+        "id": "m4",
+        "from": "resolver",
+        "to": "tld",
+        "label": "example.com?",
+        "step": 4
+      },
+      {
+        "id": "m5",
+        "from": "tld",
+        "to": "resolver",
+        "label": "Ask example.com's authoritative server",
+        "step": 5
+      },
+      {
+        "id": "m6",
+        "from": "resolver",
+        "to": "auth",
+        "label": "example.com?",
+        "step": 6
+      },
+      {
+        "id": "m7",
+        "from": "auth",
+        "to": "resolver",
+        "label": "IP address (A record)",
+        "step": 7
+      },
+      {
+        "id": "m8",
+        "from": "resolver",
+        "to": "browser",
+        "label": "IP address (cached until TTL expires)",
+        "step": 8
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

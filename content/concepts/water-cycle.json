@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "id": "water-cycle",
+  "title": "Water cycle",
+  "summary": "Water evaporates, condenses into clouds, falls as precipitation and collects before evaporating again.",
+  "category": "science",
+  "aliases": [
+    "water cycle",
+    "hydrologic cycle",
+    "hydrological cycle"
+  ],
+  "keywords": [
+    "water",
+    "cycle",
+    "rain",
+    "evaporation",
+    "precipitation",
+    "condensation"
+  ],
+  "visual": {
+    "title": "Water cycle",
+    "description": "Heat from the sun causes evaporation. Water vapour rises and condenses into clouds. Water falls as precipitation. It collects in oceans, rivers and groundwater, and the cycle repeats.",
+    "type": "cycle",
+    "direction": "clockwise",
+    "nodes": [
+      {
+        "id": "evap",
+        "label": "Evaporation",
+        "detail": "Sun heats water into vapour",
+        "step": 1
+      },
+      {
+        "id": "cond",
+        "label": "Condensation",
+        "detail": "Vapour cools into clouds",
+        "step": 2
+      },
+      {
+        "id": "precip",
+        "label": "Precipitation",
+        "detail": "Rain, snow or hail falls",
+        "step": 3
+      },
+      {
+        "id": "collect",
+        "label": "Collection",
+        "detail": "Runoff gathers in oceans, rivers and groundwater",
+        "step": 4
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

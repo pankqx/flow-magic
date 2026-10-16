@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "id": "ci-cd-pipeline",
+  "title": "CI/CD pipeline",
+  "summary": "Every commit is automatically built, tested and delivered, stopping early when something fails.",
+  "category": "software-engineering",
+  "aliases": [
+    "ci cd",
+    "ci cd pipeline",
+    "cicd",
+    "continuous integration",
+    "continuous delivery",
+    "continuous deployment",
+    "deployment pipeline"
+  ],
+  "keywords": [
+    "ci",
+    "cd",
+    "pipeline",
+    "build",
+    "deploy",
+    "deployment",
+    "release",
+    "test",
+    "testing",
+    "automation"
+  ],
+  "visual": {
+    "title": "CI/CD pipeline",
+    "description": "A developer commits code. The pipeline builds it, then runs tests. If tests fail the developer is notified. If tests pass the build is deployed to staging and then released to production.",
+    "type": "flow",
+    "nodes": [
+      {
+        "id": "commit",
+        "label": "Commit",
+        "col": 1,
+        "row": 1,
+        "kind": "external",
+        "step": 1
+      },
+      {
+        "id": "build",
+        "label": "Build",
+        "col": 2,
+        "row": 1,
+        "kind": "process",
+        "step": 2
+      },
+      {
+        "id": "test",
+        "label": "Test",
+        "col": 3,
+        "row": 1,
+        "kind": "process",
+        "step": 3
+      },
+      {
+        "id": "notify",
+        "label": "Notify developer",
+        "col": 3,
+        "row": 2,
+        "kind": "output",
+        "step": 4
+      },
+      {
+        "id": "staging",
+        "label": "Deploy to staging",
+        "col": 4,
+        "row": 1,
+        "kind": "process",
+        "step": 5
+      },
+      {
+        "id": "prod",
+        "label": "Release to production",
+        "col": 5,
+        "row": 1,
+        "kind": "output",
+        "step": 6
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "from": "commit",
+        "to": "build",
+        "label": "Push",
+        "step": 1
+      },
+      {
+        "id": "e2",
+        "from": "build",
+        "to": "test",
+        "label": "Artifact",
+        "step": 2
+      },
+      {
+        "id": "e3",
+        "from": "test",
+        "to": "notify",
+        "label": "Tests fail",
+        "step": 3
+      },
+      {
+        "id": "e4",
+        "from": "test",
+        "to": "staging",
+        "label": "Tests pass",
+        "step": 4
+      },
+      {
+        "id": "e5",
+        "from": "staging",
+        "to": "prod",
+        "label": "Approved",
+        "step": 5
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

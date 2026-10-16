@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "osi-model",
+  "title": "OSI model",
+  "summary": "Seven stacked layers describe how data travels from an application to the physical wire.",
+  "category": "networking",
+  "aliases": [
+    "osi",
+    "osi model",
+    "osi layers",
+    "seven layer model",
+    "7 layer model"
+  ],
+  "keywords": [
+    "osi",
+    "layer",
+    "layers",
+    "network",
+    "protocol",
+    "model"
+  ],
+  "visual": {
+    "title": "OSI model",
+    "description": "Seven layers from top to bottom: Application, Presentation, Session, Transport, Network, Data link and Physical. Each layer serves the one above it and uses the one below it.",
+    "type": "layers",
+    "layers": [
+      {
+        "id": "l7",
+        "label": "7 Application",
+        "detail": "User-facing protocols such as HTTP",
+        "step": 1
+      },
+      {
+        "id": "l6",
+        "label": "6 Presentation",
+        "detail": "Encoding, encryption, compression",
+        "step": 2
+      },
+      {
+        "id": "l5",
+        "label": "5 Session",
+        "detail": "Opening and closing conversations",
+        "step": 3
+      },
+      {
+        "id": "l4",
+        "label": "4 Transport",
+        "detail": "End-to-end delivery, e.g. TCP and UDP",
+        "step": 4
+      },
+      {
+        "id": "l3",
+        "label": "3 Network",
+        "detail": "Addressing and routing, e.g. IP",
+        "step": 5
+      },
+      {
+        "id": "l2",
+        "label": "2 Data link",
+        "detail": "Frames between neighbouring devices",
+        "step": 6
+      },
+      {
+        "id": "l1",
+        "label": "1 Physical",
+        "detail": "Bits on cable, fibre or radio",
+        "step": 7
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}

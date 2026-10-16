@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "id": "jwt-auth",
+  "title": "JWT authentication",
+  "summary": "A client logs in once, receives a signed token, and sends it with each later API request.",
+  "category": "software-engineering",
+  "aliases": [
+    "jwt",
+    "jwt authentication",
+    "json web token",
+    "token based authentication"
+  ],
+  "keywords": [
+    "jwt",
+    "token",
+    "authentication",
+    "auth",
+    "login",
+    "bearer",
+    "authorization"
+  ],
+  "visual": {
+    "title": "JWT authentication",
+    "description": "The client sends a username and password to the auth server. The auth server returns a signed JWT. The client sends the JWT in the Authorization header to the API server. The API server verifies the signature and returns the data.",
+    "type": "sequence",
+    "actors": [
+      {
+        "id": "client",
+        "label": "Client"
+      },
+      {
+        "id": "auth",
+        "label": "Auth server"
+      },
+      {
+        "id": "api",
+        "label": "API server"
+      }
+    ],
+    "messages": [
+      {
+        "id": "m1",
+        "from": "client",
+        "to": "auth",
+        "label": "Login: username + password",
+        "step": 1
+      },
+      {
+        "id": "m2",
+        "from": "auth",
+        "to": "client",
+        "label": "Signed JWT",
+        "step": 2
+      },
+      {
+        "id": "m3",
+        "from": "client",
+        "to": "api",
+        "label": "Request + Authorization: Bearer token",
+        "step": 3
+      },
+      {
+        "id": "m4",
+        "from": "api",
+        "to": "client",
+        "label": "Data (signature verified)",
+        "step": 4
+      }
+    ]
+  },
+  "provenance": {
+    "origin": "original",
+    "license": "MIT",
+    "author": "Flow & Magic contributors"
+  }
+}
