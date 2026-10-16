@@ -4,7 +4,7 @@
 
 Flow & Magic is a web app that helps presenters explain complex ideas by putting the right diagram on screen at the right moment. A presenter types (later: speaks) a concept, and the app shows a clear, animated visual they can step through, replace, or clear.
 
-> **Status:** concept / planning. No application code exists yet. See [`docs/STATUS.md`](docs/STATUS.md) for verified facts.
+> **Status:** working demo (academic MCA project). Typed, spoken and gesture input, curated + AI diagrams, pictures, camera filters. See [`docs/STATUS.md`](docs/STATUS.md) for verified facts and known limits.
 > **Development model:** small vertical slices, built with AI coding agents, verified with tests.
 
 ## What the first version does
@@ -53,9 +53,35 @@ python tests/reference/validate_content.py
 
 This validates every concept file against the schema and semantic rules and runs the matcher fixtures against the reference matcher. CI runs the same command.
 
-## Planned stack
+## Run it
 
-Vite + React + TypeScript (strict) + Zod + Vitest + React Testing Library + Playwright, static hosting, no backend for the MVP. Rationale: [ADR-002](docs/DECISIONS/ADR-002-tech-stack.md). Commands will be documented here after task FM-101.
+```bash
+npm install
+npm run dev        # http://localhost:5173  (use Chrome or Edge for speech)
+npm run check      # typecheck + lint + format + 131 tests
+npm run build      # static site in dist/
+```
+
+Stack: Vite + React + TypeScript (strict) + Zod + Vitest + React Testing Library, MediaPipe Tasks (hands, face, segmentation), Web Speech API. No backend ([ADR-002](docs/DECISIONS/ADR-002-tech-stack.md), [ADR-005](docs/DECISIONS/ADR-005-demo-first-scope.md)).
+
+**Deploy:** every push to `main` builds and publishes to GitHub Pages (`.github/workflows/pages.yml`). One-time setup: repo **Settings → Pages → Source: GitHub Actions**.
+
+## Demo guide
+
+| You do | What happens |
+|---|---|
+| Press **Listen** (or `M`), say *"let me explain the TCP handshake"* | **Auto** mode: the diagram draws itself |
+| Say *"next"*, *"show all"*, *"clear the board"* | Steps / clears |
+| Say *"a flowchart of making tea"*, *"a mind map of machine learning"*, *"a list of planets"* | AI draws it (needs your OpenRouter key in Settings) |
+| Say *"a picture of a dinosaur"* | Picture from Wikipedia (free) |
+| Switch to **Manual**, shout *"dinosaur!"*, then pinch-and-spread your fingers (or press `S`) | Summons it |
+| **Camera** on (`V`): 👍 next · 👎 previous · ☝️ show all · ✌️ AI draws what you just said · ✊ back · ✋ clear | Gesture control |
+| Settings → face filters, colour filters, background removal, *Weather-presenter* layout, 5 stage themes, screen effects | Fun mode |
+| **Present** (`F`) then share the tab in Zoom/Meet; `/` opens a small type box | Clean full-screen stage |
+
+**Saving your $3 of OpenRouter credit:** the default model is `gemini-2.5-flash-lite` (a diagram usually costs a small fraction of a cent); every result is cached, so repeating a topic in rehearsal is free; calls are capped per minute; the header shows what you've spent. Curated concepts and pictures never use AI.
+
+**Privacy:** the mic and camera start only on a click. Chrome's speech recognition sends audio to Google. Camera frames stay in the browser. The API key is stored only in your browser's localStorage. Fine for your own laptop, not for a public product (that needs a server proxy, see ADR-005).
 
 ## Status labels
 
