@@ -64,9 +64,9 @@ export function ArrowDefs({ id }: { id: string }) {
   );
 }
 
-/** Animation helper: elements revealed at the current step get the "enter" class. */
+/** Animation helper: elements revealed at the current step get the "enter" class; --d staggers them. */
 export function anim(step: number, current: number, delayIndex = 0): { className: string; style?: React.CSSProperties } {
   return step === current
-    ? { className: 'fm-enter', style: { animationDelay: `${delayIndex * 90}ms` } }
+    ? { className: 'fm-enter', style: { ['--d' as string]: `${delayIndex * 110}ms` } as React.CSSProperties }
     : { className: '' };
 }
