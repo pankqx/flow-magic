@@ -1,7 +1,7 @@
 import type { FlowVisual } from '../domain/types';
 import { ArrowDefs, SvgText, anim } from './svgText';
 
-const COL_W = 300;
+const COL_W = 330;
 const ROW_H = 170;
 const NW = 220;
 const NH = 84;

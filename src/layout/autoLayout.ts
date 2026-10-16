@@ -65,14 +65,17 @@ export function layoutFlow(nodes: RawNode[], edges: RawEdge[]): PlacedNode[] {
   const cols = byRank.size;
   const tallest = Math.max(...[...byRank.values()].map((v) => v.length));
   const pos = new Map<string, { col: number; row: number }>();
-  if (cols <= 6 && tallest <= 4) {
+  // A long single chain reads better (and draws bigger) as a snake than as one thin row.
+  const longChain = tallest === 1 && cols > 3;
+  if (cols <= 6 && tallest <= 4 && !longChain) {
     for (const [r, list] of byRank) list.forEach((id, i) => pos.set(id, { col: r + 1, row: i + 1 }));
   } else {
-    // Snake: left→right, then right→left, 4 per row (max 12 nodes → 3 rows).
+    // Snake: left→right, then right→left; 3 per row for short chains, else 4 (max 12 nodes → 3 rows).
+    const per = order.length <= 6 ? 3 : 4;
     order.forEach((id, i) => {
-      const row = Math.floor(i / 4);
-      const c = i % 4;
-      pos.set(id, { col: row % 2 === 0 ? c + 1 : 4 - c, row: row + 1 });
+      const row = Math.floor(i / per);
+      const c = i % per;
+      pos.set(id, { col: row % 2 === 0 ? c + 1 : per - c, row: row + 1 });
     });
   }
   const stepOf = new Map(order.map((id, i) => [id, i + 1]));

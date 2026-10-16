@@ -160,6 +160,8 @@ export function App() {
     e.preventDefault();
     submit(text);
     setText('');
+    // Hand the keyboard back to the stage so arrows/shortcuts work straight away while presenting.
+    inputRef.current?.blur();
   };
 
   // ---- keyboard ----

@@ -175,7 +175,9 @@ export function Stage(p: Props) {
           <div key={entry.item.id} className={s.item}>
             {entry.item.kind === 'visual' ? (
               <RenderBoundary onError={p.onRenderFailed} resetKey={entry.item.id}>
-                <h2 className={s.vTitle}>{entry.item.visual.title}</h2>
+                {entry.item.visual.type !== 'cycle' && (
+                  <h2 className={s.vTitle}>{entry.item.visual.title}</h2>
+                )}
                 <div className={s.svgWrap}>
                   <VisualView v={entry.item.visual} step={entry.step} uid={`st-${state.cursor}`} />
                 </div>
