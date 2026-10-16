@@ -31,3 +31,6 @@ __pycache__/
 # Test output
 playwright-report/
 test-results/
+
+# Copied from node_modules at dev/build time
+public/mediapipe/

@@ -4,12 +4,13 @@ For every AI coding agent (Claude Code, Codex, Cursor, Copilot, others) and huma
 
 ## 1. What this project is
 
-A standalone web app that shows curated, animated diagrams for concepts a presenter types (speech comes later). The MVP is: **typed concept → deterministic matcher → validated visual descriptor → SVG renderer → presenter controls**.
+A standalone web app that shows animated diagrams and pictures while a presenter talks, types or gestures. Pipeline: **speech/typed/gesture input → intent parser + deterministic matcher (+ optional AI) → validated visual descriptor → SVG renderer → presenter controls**. Scope: ADR-005.
 
 Hard boundaries (stop and ask a human before crossing any):
 - No video calling, meeting rooms, accounts, billing.
-- No backend, database, auth or analytics service in the MVP.
-- No AI model calls, microphone capture or 3D in the MVP.
+- No backend, database or analytics service (the demo calls OpenRouter and Wikipedia directly from the browser; see ADR-005).
+- Speech, AI, camera and gestures are allowed **only behind explicit user toggles** (ADR-005). Never start the mic or camera without a click.
+- Never commit API keys. The OpenRouter key lives only in the user's browser storage.
 - Never execute, `eval`, or inject (`dangerouslySetInnerHTML`, `innerHTML`) model-generated or user-provided content.
 
 ## 2. Read only what your task needs
