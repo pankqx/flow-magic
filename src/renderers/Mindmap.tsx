@@ -33,7 +33,11 @@ export function MindmapRenderer({ v, step, uid }: { v: MindmapVisual; step: numb
               const ky = by + 120 * Math.sin(ang + spread);
               return (
                 <g key={j} className="fm-pop fm-delay">
-                  <path d={`M${bx},${by} L${kx},${ky}`} pathLength={1} className="fm-line fm-line-thin fm-draw" />
+                  <path
+                    d={`M${bx},${by} L${kx},${ky}`}
+                    pathLength={1}
+                    className="fm-line fm-line-thin fm-draw"
+                  />
                   <rect x={kx - 80} y={ky - 20} width={160} height={40} rx={20} className="fm-chip" />
                   <SvgText x={kx} y={ky} text={k} maxChars={18} maxLines={1} className="fm-chip-text" />
                 </g>
@@ -41,7 +45,15 @@ export function MindmapRenderer({ v, step, uid }: { v: MindmapVisual; step: numb
             })}
             <g className="fm-pop">
               <rect x={bx - 115} y={by - 38} width={230} height={76} rx={38} className="fm-shape fm-node" />
-              <SvgText x={bx} y={by} text={b.label} maxChars={18} maxLines={2} lineHeight={24} className="fm-label" />
+              <SvgText
+                x={bx}
+                y={by}
+                text={b.label}
+                maxChars={18}
+                maxLines={2}
+                lineHeight={24}
+                className="fm-label"
+              />
             </g>
           </g>
         );

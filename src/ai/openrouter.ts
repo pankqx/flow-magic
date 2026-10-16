@@ -26,7 +26,11 @@ export interface GenerateResult {
   costUsd?: number;
 }
 
-async function call(settings: AiSettings, messages: { role: string; content: string }[], signal?: AbortSignal) {
+async function call(
+  settings: AiSettings,
+  messages: { role: string; content: string }[],
+  signal?: AbortSignal,
+) {
   const res = await fetch(ENDPOINT, {
     method: 'POST',
     signal,
@@ -99,7 +103,7 @@ export async function generateVisual(
     { role: 'user', content: user },
   ];
   let total = 0;
-  let first = await call(settings, messages, opts.signal);
+  const first = await call(settings, messages, opts.signal);
   total += first.cost;
   try {
     const raw = extractJson(first.content);
@@ -113,12 +117,14 @@ export async function generateVisual(
       [
         ...messages,
         { role: 'assistant', content: first.content.slice(0, 4000) },
-        { role: 'user', content: `That JSON was invalid: ${(e as Error).message.slice(0, 300)}. Reply with corrected JSON only.` },
+        {
+          role: 'user',
+          content: `That JSON was invalid: ${(e as Error).message.slice(0, 300)}. Reply with corrected JSON only.`,
+        },
       ],
       opts.signal,
     );
     total += second.cost;
-    first = second;
     try {
       const raw = extractJson(second.content);
       const visual = buildVisual(raw);

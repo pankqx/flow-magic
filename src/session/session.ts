@@ -85,7 +85,14 @@ export function reducer(s: SessionState, ev: SessionEvent): SessionState {
       let history = s.history.slice(0, s.cursor + 1);
       history.push({ item: ev.item, step: 1, source: ev.source, query: ev.query, detail: ev.detail });
       if (history.length > MAX_HISTORY) history = history.slice(history.length - MAX_HISTORY);
-      return { ...s, history, cursor: history.length - 1, cleared: false, notice: undefined, busy: undefined };
+      return {
+        ...s,
+        history,
+        cursor: history.length - 1,
+        cleared: false,
+        notice: undefined,
+        busy: undefined,
+      };
     }
     case 'NOTICE':
       return { ...s, notice: ev.notice, busy: undefined };
@@ -95,9 +102,13 @@ export function reducer(s: SessionState, ev: SessionEvent): SessionState {
       if (s.cleared && s.cursor >= 0) return { ...s, cleared: false };
       return s.cursor > 0 ? { ...s, cursor: s.cursor - 1, cleared: false, notice: undefined } : s;
     case 'FORWARD':
-      return s.cursor < s.history.length - 1 ? { ...s, cursor: s.cursor + 1, cleared: false, notice: undefined } : s;
+      return s.cursor < s.history.length - 1
+        ? { ...s, cursor: s.cursor + 1, cleared: false, notice: undefined }
+        : s;
     case 'GOTO':
-      return ev.index >= 0 && ev.index < s.history.length ? { ...s, cursor: ev.index, cleared: false, notice: undefined } : s;
+      return ev.index >= 0 && ev.index < s.history.length
+        ? { ...s, cursor: ev.index, cleared: false, notice: undefined }
+        : s;
     case 'STEP_NEXT':
       return setStep(s, (st) => st + 1);
     case 'STEP_PREV':
@@ -118,7 +129,11 @@ export function reducer(s: SessionState, ev: SessionEvent): SessionState {
         ...s,
         history,
         cursor: Math.min(s.cursor - 1, history.length - 1),
-        notice: { kind: 'error', query: '', message: "That visual couldn't be drawn, so the previous one is still shown." },
+        notice: {
+          kind: 'error',
+          query: '',
+          message: "That visual couldn't be drawn, so the previous one is still shown.",
+        },
       };
     }
     case 'BUSY':

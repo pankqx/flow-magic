@@ -32,7 +32,16 @@ interface Props {
 }
 
 /** Multi-line text vertically centred on (x, y). Text is always rendered as text, never as markup. */
-export function SvgText({ x, y, text, maxChars, lineHeight = 26, className, maxLines, anchor = 'middle' }: Props) {
+export function SvgText({
+  x,
+  y,
+  text,
+  maxChars,
+  lineHeight = 26,
+  className,
+  maxLines,
+  anchor = 'middle',
+}: Props) {
   const lines = wrap(text, maxChars, maxLines);
   const top = y - ((lines.length - 1) * lineHeight) / 2;
   return (
@@ -50,7 +59,15 @@ export function SvgText({ x, y, text, maxChars, lineHeight = 26, className, maxL
 export function ArrowDefs({ id }: { id: string }) {
   return (
     <defs>
-      <marker id={id} viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <marker
+        id={id}
+        viewBox="0 0 12 12"
+        refX="10"
+        refY="6"
+        markerWidth="9"
+        markerHeight="9"
+        orient="auto-start-reverse"
+      >
         <path d="M1,1 L11,6 L1,11 z" className="fm-arrowhead" />
       </marker>
       <filter id={`${id}-glow`} x="-30%" y="-30%" width="160%" height="160%">
@@ -65,7 +82,11 @@ export function ArrowDefs({ id }: { id: string }) {
 }
 
 /** Animation helper: elements revealed at the current step get the "enter" class; --d staggers them. */
-export function anim(step: number, current: number, delayIndex = 0): { className: string; style?: React.CSSProperties } {
+export function anim(
+  step: number,
+  current: number,
+  delayIndex = 0,
+): { className: string; style?: React.CSSProperties } {
   return step === current
     ? { className: 'fm-enter', style: { ['--d' as string]: `${delayIndex * 110}ms` } as React.CSSProperties }
     : { className: '' };

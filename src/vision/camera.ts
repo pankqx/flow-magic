@@ -23,9 +23,11 @@ export interface CameraOptions {
 }
 
 const MODELS = {
-  gesture: 'https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task',
+  gesture:
+    'https://storage.googleapis.com/mediapipe-models/gesture_recognizer/gesture_recognizer/float16/1/gesture_recognizer.task',
   face: 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',
-  segment: 'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite',
+  segment:
+    'https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/latest/selfie_segmenter.tflite',
 };
 
 type Status = { state: 'off' | 'starting' | 'loading' | 'on' | 'error'; message?: string };
@@ -59,7 +61,10 @@ export class CameraEngine {
   async start() {
     this.onStatus?.({ state: 'starting' });
     try {
-      this.stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' }, audio: false });
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: 640, height: 480, facingMode: 'user' },
+        audio: false,
+      });
     } catch (e) {
       this.onStatus?.({ state: 'error', message: 'Camera permission was blocked or no camera was found.' });
       throw e;
@@ -98,7 +103,10 @@ export class CameraEngine {
   private async load(name: 'gesture' | 'face' | 'segment') {
     if (this.loading.has(name)) return;
     this.loading.add(name);
-    this.onStatus?.({ state: 'loading', message: `Loading ${name === 'segment' ? 'background removal' : name} model…` });
+    this.onStatus?.({
+      state: 'loading',
+      message: `Loading ${name === 'segment' ? 'background removal' : name} model…`,
+    });
     try {
       const m = await import('@mediapipe/tasks-vision');
       const fs = (await this.fileset()) as Parameters<typeof m.GestureRecognizer.createFromOptions>[0];
@@ -131,7 +139,10 @@ export class CameraEngine {
       this.onStatus?.({ state: 'on' });
     } catch {
       this.loading.delete(name);
-      this.onStatus?.({ state: 'error', message: `Couldn't load the ${name} model (needs internet the first time).` });
+      this.onStatus?.({
+        state: 'error',
+        message: `Couldn't load the ${name} model (needs internet the first time).`,
+      });
     }
   }
 
@@ -199,7 +210,13 @@ export class CameraEngine {
         const d = (a: number, b: number) => Math.hypot(hand[a]!.x - hand[b]!.x, hand[a]!.y - hand[b]!.y);
         const size = d(0, 9) || 1;
         const cat = r.gestures?.[0]?.[0];
-        if (this.opts.gestures) this.onHand?.({ gesture: cat?.categoryName ?? 'None', score: cat?.score ?? 0, pinch: d(4, 8) / size, t: ts });
+        if (this.opts.gestures)
+          this.onHand?.({
+            gesture: cat?.categoryName ?? 'None',
+            score: cat?.score ?? 0,
+            pinch: d(4, 8) / size,
+            t: ts,
+          });
         if (this.opts.wand) this.trail.push({ x: (1 - hand[8]!.x) * w, y: hand[8]!.y * h, t: ts });
       } else if (this.opts.gestures) this.onHand?.(undefined);
     }

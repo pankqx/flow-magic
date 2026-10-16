@@ -9,7 +9,12 @@ import { layoutFlow } from '../layout/autoLayout';
  * descriptor ourselves, then validate it with the same schema the curated content uses.
  * Model output is only ever data; nothing is executed or injected (ADR-003).
  */
-const txt = (max: number) => z.string().trim().min(1).transform((s) => (s.length > max ? s.slice(0, max - 1) + '…' : s));
+const txt = (max: number) =>
+  z
+    .string()
+    .trim()
+    .min(1)
+    .transform((s) => (s.length > max ? s.slice(0, max - 1) + '…' : s));
 const item = z.object({ label: txt(80), detail: txt(120).optional() });
 
 export const looseVisual = z.discriminatedUnion('type', [
@@ -17,25 +22,62 @@ export const looseVisual = z.discriminatedUnion('type', [
     type: z.literal('flow'),
     title: txt(80),
     description: z.string().optional(),
-    nodes: z.array(z.object({ id: z.string().optional(), label: txt(80), kind: z.enum(['process', 'store', 'external', 'output']).optional().catch(undefined) })).min(2).max(12),
-    edges: z.array(z.object({ from: z.string(), to: z.string(), label: txt(40).optional() })).min(1).max(20),
+    nodes: z
+      .array(
+        z.object({
+          id: z.string().optional(),
+          label: txt(80),
+          kind: z.enum(['process', 'store', 'external', 'output']).optional().catch(undefined),
+        }),
+      )
+      .min(2)
+      .max(12),
+    edges: z
+      .array(z.object({ from: z.string(), to: z.string(), label: txt(40).optional() }))
+      .min(1)
+      .max(20),
   }),
   z.object({
     type: z.literal('sequence'),
     title: txt(80),
     description: z.string().optional(),
-    actors: z.array(z.union([z.string(), z.object({ label: z.string() }).transform((a) => a.label)])).min(2).max(6),
-    messages: z.array(z.object({ from: z.string(), to: z.string(), label: txt(80) })).min(1).max(20),
+    actors: z
+      .array(z.union([z.string(), z.object({ label: z.string() }).transform((a) => a.label)]))
+      .min(2)
+      .max(6),
+    messages: z
+      .array(z.object({ from: z.string(), to: z.string(), label: txt(80) }))
+      .min(1)
+      .max(20),
   }),
-  z.object({ type: z.literal('cycle'), title: txt(80), description: z.string().optional(), nodes: z.array(item).min(3).max(8) }),
-  z.object({ type: z.literal('layers'), title: txt(80), description: z.string().optional(), layers: z.array(item).min(2).max(10) }),
-  z.object({ type: z.literal('list'), title: txt(80), description: z.string().optional(), ordered: z.boolean().optional(), items: z.array(item).min(2).max(10) }),
+  z.object({
+    type: z.literal('cycle'),
+    title: txt(80),
+    description: z.string().optional(),
+    nodes: z.array(item).min(3).max(8),
+  }),
+  z.object({
+    type: z.literal('layers'),
+    title: txt(80),
+    description: z.string().optional(),
+    layers: z.array(item).min(2).max(10),
+  }),
+  z.object({
+    type: z.literal('list'),
+    title: txt(80),
+    description: z.string().optional(),
+    ordered: z.boolean().optional(),
+    items: z.array(item).min(2).max(10),
+  }),
   z.object({
     type: z.literal('mindmap'),
     title: txt(80),
     description: z.string().optional(),
     center: txt(80),
-    branches: z.array(z.object({ label: txt(80), children: z.array(txt(60)).max(4).optional() })).min(2).max(8),
+    branches: z
+      .array(z.object({ label: txt(80), children: z.array(txt(60)).max(4).optional() }))
+      .min(2)
+      .max(8),
   }),
 ]);
 
@@ -93,7 +135,14 @@ export function buildVisual(json: unknown): Visual {
         type: 'flow',
         title: loose.title,
         description: describe(loose.title, loose.description, placed.map((p) => p.label).join(' → ')),
-        nodes: placed.map((p) => ({ id: p.id, label: p.label, col: p.col, row: p.row, step: p.step, ...(p.kind ? { kind: p.kind } : {}) })),
+        nodes: placed.map((p) => ({
+          id: p.id,
+          label: p.label,
+          col: p.col,
+          row: p.row,
+          step: p.step,
+          ...(p.kind ? { kind: p.kind } : {}),
+        })),
         edges: edges.map((e, i) => ({
           id: `e${i + 1}`,
           from: e.from,

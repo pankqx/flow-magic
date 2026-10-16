@@ -49,9 +49,24 @@ export function CycleRenderer({ v, step, uid }: { v: CycleVisual; step: number; 
             <text x={p.x} y={p.y - r + 24} textAnchor="middle" className="fm-step-num">
               {node.step}
             </text>
-            <SvgText x={p.x} y={p.y + (node.detail ? -8 : 4)} text={node.label} maxChars={13} className="fm-label" maxLines={2} />
+            <SvgText
+              x={p.x}
+              y={p.y + (node.detail ? -8 : 4)}
+              text={node.label}
+              maxChars={13}
+              className="fm-label"
+              maxLines={2}
+            />
             {node.detail && (
-              <SvgText x={p.x} y={p.y + 40} text={node.detail} maxChars={20} lineHeight={18} className="fm-detail" maxLines={2} />
+              <SvgText
+                x={p.x}
+                y={p.y + 40}
+                text={node.detail}
+                maxChars={20}
+                lineHeight={18}
+                className="fm-detail"
+                maxLines={2}
+              />
             )}
           </g>
         );

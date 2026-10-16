@@ -16,9 +16,16 @@ export default tseslint.config(
       'react-hooks/exhaustive-deps': 'warn',
       'no-restricted-syntax': [
         'error',
-        { selector: "JSXAttribute[name.name='dangerouslySetInnerHTML']", message: 'Never inject HTML (AGENTS rule 7).' },
-        { selector: "MemberExpression[property.name='innerHTML']", message: 'Never inject HTML (AGENTS rule 7).' },
+        {
+          selector: "JSXAttribute[name.name='dangerouslySetInnerHTML']",
+          message: 'Never inject HTML (AGENTS rule 7).',
+        },
+        {
+          selector: "MemberExpression[property.name='innerHTML']",
+          message: 'Never inject HTML (AGENTS rule 7).',
+        },
       ],
     },
   },
+  { files: ['**/*.test.{ts,tsx}'], rules: { '@typescript-eslint/no-explicit-any': 'off' } },
 );

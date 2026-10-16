@@ -28,17 +28,25 @@ export async function findPicture(subject: string, signal?: AbortSignal): Promis
   const res = await fetch(url, { signal });
   if (!res.ok) return undefined;
   const body = await res.json();
-  const pages: any[] = Object.values(body?.query?.pages ?? {});
+  interface WikiPage {
+    index?: number;
+    title?: string;
+    extract?: string;
+    fullurl?: string;
+    thumbnail?: { source?: string };
+  }
+  const pages: WikiPage[] = Object.values(body?.query?.pages ?? {});
   pages.sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
   const page = pages.find((p) => p.thumbnail?.source);
-  if (!page) return undefined;
-  const src: string = page.thumbnail.source;
+  const src = page?.thumbnail?.source;
+  if (!page || !src) return undefined;
   if (!/^https:\/\/upload\.wikimedia\.org\//.test(src)) return undefined; // only trusted image host
   return {
     title: String(page.title).slice(0, 80),
     imageUrl: src,
     caption: String(page.extract ?? '').slice(0, 280),
     credit: 'Image and text: Wikipedia / Wikimedia Commons',
-    pageUrl: typeof page.fullurl === 'string' && page.fullurl.startsWith('https://') ? page.fullurl : undefined,
+    pageUrl:
+      typeof page.fullurl === 'string' && page.fullurl.startsWith('https://') ? page.fullurl : undefined,
   };
 }

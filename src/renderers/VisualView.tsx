@@ -24,7 +24,10 @@ export function VisualView({ v, step, uid }: { v: Visual; step: number; uid: str
   }
 }
 
-export class RenderBoundary extends Component<{ onError: () => void; resetKey: string; children: ReactNode }, { failed: boolean }> {
+export class RenderBoundary extends Component<
+  { onError: () => void; resetKey: string; children: ReactNode },
+  { failed: boolean }
+> {
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };

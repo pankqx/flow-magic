@@ -1,0 +1,180 @@
+/* Styles for the fm-* classes emitted by src/renderers. Colours come from the stage theme tokens. */
+.fm-svg {
+  overflow: visible;
+  font-family: var(--diagram-font);
+}
+.fm-shape {
+  fill: var(--node-fill);
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.fm-node-store .fm-shape {
+  fill: var(--node-fill-2);
+}
+.fm-node-store .fm-shape-cap {
+  fill: color-mix(in srgb, var(--node-fill-2) 60%, var(--bg-solid));
+}
+.fm-node-external {
+  stroke-dasharray: 12 7;
+}
+.fm-node-output .fm-shape {
+  stroke: var(--accent);
+  fill: var(--accent-fill);
+}
+.fm-shape-inner {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.7;
+}
+.fm-center {
+  fill: var(--accent-fill);
+  stroke: var(--accent);
+  stroke-width: 4;
+}
+.fm-label {
+  fill: var(--ink);
+  font-size: var(--label-size);
+  font-weight: 600;
+}
+.fm-label-big {
+  font-size: calc(var(--label-size) * 1.2);
+  font-weight: 700;
+}
+.fm-detail {
+  fill: var(--muted);
+  font-size: var(--small-size);
+}
+.fm-line {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+.fm-line-thick {
+  stroke-width: 5;
+  stroke: var(--accent-2);
+}
+.fm-line-thin {
+  stroke-width: 2;
+  stroke: var(--line-soft);
+}
+.fm-arrowhead {
+  fill: var(--line);
+}
+.fm-edge-label rect {
+  fill: var(--bg-solid);
+  stroke: var(--line-soft);
+}
+.fm-edge-label text {
+  fill: var(--accent);
+  font-size: var(--small-size);
+  font-weight: 600;
+}
+.fm-lifeline {
+  stroke: var(--line-soft);
+  stroke-width: 2;
+  stroke-dasharray: 6 9;
+}
+.fm-msg-label {
+  fill: var(--ink);
+  font-size: calc(var(--small-size) * 1.15);
+  font-weight: 600;
+}
+.fm-step-num {
+  fill: var(--accent);
+  font-size: var(--small-size);
+  font-weight: 700;
+}
+.fm-dot {
+  fill: var(--accent);
+}
+.fm-orbit {
+  fill: none;
+  stroke: var(--line-soft);
+  stroke-width: 2;
+  stroke-dasharray: 3 12;
+}
+.fm-cycle-title {
+  fill: var(--accent);
+  font-size: calc(var(--label-size) * 1.15);
+  font-weight: 700;
+}
+.fm-accent-bar,
+.fm-badge {
+  fill: var(--accent);
+}
+.fm-badge-text {
+  fill: var(--bg-solid);
+  font-size: var(--label-size);
+  font-weight: 700;
+}
+.fm-chip {
+  fill: var(--node-fill-2);
+  stroke: var(--line-soft);
+}
+.fm-chip-text {
+  fill: var(--ink);
+  font-size: var(--small-size);
+}
+.fm-label-left {
+  text-anchor: start;
+}
+
+/* Draw-on animation: only elements revealed at the current step carry .fm-enter. */
+@media (prefers-reduced-motion: no-preference) {
+  .fm-enter .fm-draw,
+  .fm-draw.fm-enter {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: fm-draw 0.75s cubic-bezier(0.6, 0, 0.3, 1) forwards;
+    animation-delay: var(--d, 0ms);
+  }
+  .fm-enter.fm-pop,
+  .fm-enter .fm-pop {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: fm-pop 0.6s cubic-bezier(0.2, 1.5, 0.4, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+  .fm-enter .fm-delay {
+    animation-delay: calc(var(--d, 0ms) + 380ms);
+  }
+  .fm-enter.fm-slide {
+    animation: fm-slide 0.55s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+  .fm-enter .fm-fade {
+    animation: fm-fade 0.5s 0.35s both;
+  }
+  .fm-enter .fm-edge-label {
+    animation: fm-fade 0.4s both;
+    animation-delay: calc(var(--d, 0ms) + 500ms);
+  }
+  .fm-enter .fm-dot {
+    animation: fm-fade 0.3s both;
+  }
+}
+@keyframes fm-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes fm-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+@keyframes fm-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+}
+@keyframes fm-fade {
+  from {
+    opacity: 0;
+  }
+}

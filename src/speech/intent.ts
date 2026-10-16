@@ -38,7 +38,10 @@ function clean(s: string): string {
 }
 
 function subjectOf(s: string): string {
-  return s.replace(ARTICLE, '').replace(/\s+(please|now|here|for you|for me)$/, '').trim();
+  return s
+    .replace(ARTICLE, '')
+    .replace(/\s+(please|now|here|for you|for me)$/, '')
+    .trim();
 }
 
 /**
@@ -48,7 +51,8 @@ function subjectOf(s: string): string {
 export function parseIntent(raw: string): Intent {
   const t = clean(raw).replace(/^(okay|ok|so|alright|now|and|hey magic|magic)\s+/, '');
   if (!t) return { kind: 'plain', text: '' };
-  if (t.split(' ').length <= 4) for (const [re, cmd] of COMMANDS) if (re.test(t)) return { kind: 'command', cmd };
+  if (t.split(' ').length <= 4)
+    for (const [re, cmd] of COMMANDS) if (re.test(t)) return { kind: 'command', cmd };
 
   // "picture / photo / image of X"
   let m = t.match(/\b(?:picture|photo|image|pic|photograph)s? of (.+)$/);
@@ -62,11 +66,18 @@ export function parseIntent(raw: string): Intent {
     const word = m[1]!;
     const vt = TYPE_WORDS.find(([re]) => re.test(word));
     const subject = subjectOf(m[2]!);
-    if (subject) return { kind: 'generate', subject: word === 'steps' ? `steps to ${subject}` : subject, visualType: vt?.[1] };
+    if (subject)
+      return {
+        kind: 'generate',
+        subject: word === 'steps' ? `steps to ${subject}` : subject,
+        visualType: vt?.[1],
+      };
   }
 
   // "let me explain X", "let's talk about X", "how does X work", "what is X"
-  m = t.match(/\b(?:let me explain|let me show you|let's talk about|lets talk about|explain|talk about|introducing) (.+)$/);
+  m = t.match(
+    /\b(?:let me explain|let me show you|let's talk about|lets talk about|explain|talk about|introducing) (.+)$/,
+  );
   if (m) return { kind: 'topic', subject: subjectOf(m[1]!) };
   m = t.match(/\bhow (?:does|do) (.+?) works?$/);
   if (m) return { kind: 'topic', subject: subjectOf(m[1]!) };
@@ -80,7 +91,9 @@ export function parseIntent(raw: string): Intent {
   return { kind: 'plain', text: t };
 }
 
-const LEAD = new Set('okay ok so alright now and um uh like the a an this that is it its here there well right'.split(' '));
+const LEAD = new Set(
+  'okay ok so alright now and um uh like the a an this that is it its here there well right'.split(' '),
+);
 
 /** Last few meaningful words of an utterance — what a summon gesture will act on. */
 export function calloutOf(raw: string): string {

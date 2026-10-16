@@ -68,7 +68,8 @@ export function semanticProblems(v: Visual): string[] {
         if (m.from === m.to) p.push(`message ${m.id} is a self-message`);
       }
       steps = v.messages.map((m) => m.step);
-      if (steps.some((s, i) => i > 0 && s <= steps[i - 1]!)) p.push('sequence steps must be strictly increasing');
+      if (steps.some((s, i) => i > 0 && s <= steps[i - 1]!))
+        p.push('sequence steps must be strictly increasing');
       break;
     }
     case 'cycle':
@@ -104,6 +105,7 @@ export function semanticProblems(v: Visual): string[] {
       break;
   }
   const distinct = [...new Set(steps)].sort((a, b) => a - b);
-  if (distinct.some((s, i) => s !== i + 1)) p.push(`steps must be contiguous from 1 (got ${distinct.join(',')})`);
+  if (distinct.some((s, i) => s !== i + 1))
+    p.push(`steps must be contiguous from 1 (got ${distinct.join(',')})`);
   return p;
 }

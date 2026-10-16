@@ -3,7 +3,13 @@ import { catalog } from '../content/catalog';
 import { MAX_HISTORY, currentEntry, initialState, reducer, type SessionEvent } from './session';
 import type { StageItem } from '../domain/types';
 
-const item = (id: string): StageItem => ({ kind: 'visual', id, visual: catalog.get(id)!.visual, origin: 'curated', conceptId: id });
+const item = (id: string): StageItem => ({
+  kind: 'visual',
+  id,
+  visual: catalog.get(id)!.visual,
+  origin: 'curated',
+  conceptId: id,
+});
 const run = (...evs: SessionEvent[]) => evs.reduce(reducer, initialState);
 const show = (id: string): SessionEvent => ({ type: 'SHOW', item: item(id), source: 'typed' });
 
@@ -44,7 +50,10 @@ describe('session reducer', () => {
   });
 
   it('notices keep the current visual', () => {
-    const s = run(show('tcp-handshake'), { type: 'NOTICE', notice: { kind: 'none', query: 'x', suggestions: [] } });
+    const s = run(show('tcp-handshake'), {
+      type: 'NOTICE',
+      notice: { kind: 'none', query: 'x', suggestions: [] },
+    });
     expect(currentEntry(s)?.item.id).toBe('tcp-handshake');
     expect(s.notice?.kind).toBe('none');
   });

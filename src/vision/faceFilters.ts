@@ -17,7 +17,13 @@ interface Pt {
   y: number;
 }
 
-export function drawFaceFilter(ctx: CanvasRenderingContext2D, lm: Pt[], filter: FaceFilter, w: number, h: number) {
+export function drawFaceFilter(
+  ctx: CanvasRenderingContext2D,
+  lm: Pt[],
+  filter: FaceFilter,
+  w: number,
+  h: number,
+) {
   if (filter === 'none' || lm.length < 400) return;
   // Mirrored video: flip x.
   const P = (i: number): Pt => ({ x: (1 - lm[i]!.x) * w, y: lm[i]!.y * h });

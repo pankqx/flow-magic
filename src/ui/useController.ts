@@ -57,36 +57,66 @@ export function useController(deps: ControllerDeps) {
     const it = curatedItem(id);
     if (!it) return;
     const alias = query ? matchedAlias(query, catalog.get(id)!) : undefined;
-    dispatch({ type: 'SHOW', item: it, source, query, detail: alias ? `matched “${alias}”` : 'from the library' });
+    dispatch({
+      type: 'SHOW',
+      item: it,
+      source,
+      query,
+      detail: alias ? `matched “${alias}”` : 'from the library',
+    });
   }, []);
 
-  const picture = useCallback(async (subject: string, source: ItemSource, fallbackToAi = false): Promise<boolean> => {
-    const ac = fresh();
-    dispatch({ type: 'BUSY', label: `Finding a picture of ${subject}…` });
-    try {
-      const pic = await findPicture(subject, ac.signal);
-      if (ac.signal.aborted) return false;
-      if (pic) {
-        dispatch({ type: 'SHOW', item: { kind: 'picture', id: `p:${pic.imageUrl}`, picture: pic }, source, query: subject, detail: 'picture from Wikipedia' });
-        return true;
+  const picture = useCallback(
+    async (subject: string, source: ItemSource, fallbackToAi = false): Promise<boolean> => {
+      const ac = fresh();
+      dispatch({ type: 'BUSY', label: `Finding a picture of ${subject}…` });
+      try {
+        const pic = await findPicture(subject, ac.signal);
+        if (ac.signal.aborted) return false;
+        if (pic) {
+          dispatch({
+            type: 'SHOW',
+            item: { kind: 'picture', id: `p:${pic.imageUrl}`, picture: pic },
+            source,
+            query: subject,
+            detail: 'picture from Wikipedia',
+          });
+          return true;
+        }
+        if (fallbackToAi && depsRef.current.aiOn()) return generate(subject, source);
+        dispatch({
+          type: 'NOTICE',
+          notice: { kind: 'error', query: subject, message: `No picture found for “${subject}”.` },
+        });
+      } catch (e) {
+        if ((e as Error).name === 'AbortError') return false;
+        dispatch({
+          type: 'NOTICE',
+          notice: { kind: 'error', query: subject, message: 'Picture search needs an internet connection.' },
+        });
       }
-      if (fallbackToAi && depsRef.current.aiOn()) return generate(subject, source);
-      dispatch({ type: 'NOTICE', notice: { kind: 'error', query: subject, message: `No picture found for “${subject}”.` } });
-    } catch (e) {
-      if ((e as Error).name === 'AbortError') return false;
-      dispatch({ type: 'NOTICE', notice: { kind: 'error', query: subject, message: 'Picture search needs an internet connection.' } });
-    }
-    return false;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      return false;
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [],
+  );
 
   const generate = useCallback(
-    async (subject: string, source: ItemSource, visualType?: Visual['type'], context?: string): Promise<boolean> => {
+    async (
+      subject: string,
+      source: ItemSource,
+      visualType?: Visual['type'],
+      context?: string,
+    ): Promise<boolean> => {
       const d = depsRef.current;
       if (!d.aiOn()) {
         dispatch({
           type: 'NOTICE',
-          notice: { kind: 'error', query: subject, message: 'AI drawing is off. Add your OpenRouter key in Settings and switch AI on.' },
+          notice: {
+            kind: 'error',
+            query: subject,
+            message: 'AI drawing is off. Add your OpenRouter key in Settings and switch AI on.',
+          },
         });
         return false;
       }
@@ -98,15 +128,25 @@ export function useController(deps: ControllerDeps) {
         if (r.spend) d.onSpend(r.spend);
         dispatch({
           type: 'SHOW',
-          item: { kind: 'visual', id: `ai:${visualType ?? 'auto'}:${subject.toLowerCase()}`, visual: r.visual, origin: 'ai' },
+          item: {
+            kind: 'visual',
+            id: `ai:${visualType ?? 'auto'}:${subject.toLowerCase()}`,
+            visual: r.visual,
+            origin: 'ai',
+          },
           source,
           query: subject,
-          detail: r.cached ? 'AI · from cache (free)' : `AI · ${d.ai().model.split('/').pop()}${r.costUsd ? ` · $${r.costUsd.toFixed(5)}` : ''}`,
+          detail: r.cached
+            ? 'AI · from cache (free)'
+            : `AI · ${d.ai().model.split('/').pop()}${r.costUsd ? ` · $${r.costUsd.toFixed(5)}` : ''}`,
         });
         return true;
       } catch (e) {
         if ((e as Error).name === 'AbortError') return false;
-        dispatch({ type: 'NOTICE', notice: { kind: 'error', query: subject, message: (e as Error).message } });
+        dispatch({
+          type: 'NOTICE',
+          notice: { kind: 'error', query: subject, message: (e as Error).message },
+        });
         return false;
       }
     },
@@ -138,7 +178,10 @@ export function useController(deps: ControllerDeps) {
           const m = match(q, catalog);
           if (m.status === 'match') return showCurated(m.conceptId, source, q);
           if (m.status === 'ambiguous') {
-            dispatch({ type: 'NOTICE', notice: { kind: 'ambiguous', query: q, candidates: m.candidates.slice(0, 3) } });
+            dispatch({
+              type: 'NOTICE',
+              notice: { kind: 'ambiguous', query: q, candidates: m.candidates.slice(0, 3) },
+            });
             return;
           }
           if (m.status === 'invalid') {
@@ -206,7 +249,13 @@ export function useController(deps: ControllerDeps) {
   const summon = useCallback(() => {
     const p = stateRef.current.pending;
     if (!p) {
-      dispatch({ type: 'NOTICE', notice: { kind: 'info', message: 'Say a word first (Listen must be on), then spread your fingers to summon it.' } });
+      dispatch({
+        type: 'NOTICE',
+        notice: {
+          kind: 'info',
+          message: 'Say a word first (Listen must be on), then spread your fingers to summon it.',
+        },
+      });
       return;
     }
     dispatch({ type: 'PENDING', text: undefined });
@@ -232,7 +281,10 @@ export function useController(deps: ControllerDeps) {
           const recent = transcriptRef.current.slice(-2).join(' ');
           const subject = stateRef.current.pending ?? transcriptRef.current.at(-1);
           if (!subject) {
-            dispatch({ type: 'NOTICE', notice: { kind: 'info', message: 'Say something first, then show ✌️ to have AI draw it.' } });
+            dispatch({
+              type: 'NOTICE',
+              notice: { kind: 'info', message: 'Say something first, then show ✌️ to have AI draw it.' },
+            });
             return;
           }
           dispatch({ type: 'PENDING', text: undefined });

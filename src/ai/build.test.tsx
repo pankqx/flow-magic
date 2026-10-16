@@ -47,11 +47,36 @@ describe('AI descriptor builder', () => {
   });
 
   it.each([
-    { type: 'list', title: 'Sorting algorithms', items: [{ label: 'Bubble sort', detail: 'O(n²)' }, { label: 'Merge sort' }] },
-    { type: 'cycle', title: 'Life of a butterfly', nodes: [{ label: 'Egg' }, { label: 'Larva' }, { label: 'Pupa' }, { label: 'Adult' }] },
-    { type: 'layers', title: 'Computer', layers: [{ label: 'Apps' }, { label: 'OS' }, { label: 'Hardware' }] },
-    { type: 'sequence', title: 'Ordering food', actors: ['Customer', 'Waiter', 'Kitchen'], messages: [{ from: 'Customer', to: 'Waiter', label: 'Order' }, { from: 'waiter', to: 'kitchen', label: 'Ticket' }] },
-    { type: 'mindmap', title: 'ML', center: 'Machine learning', branches: [{ label: 'Supervised', children: ['Regression'] }, { label: 'Unsupervised' }] },
+    {
+      type: 'list',
+      title: 'Sorting algorithms',
+      items: [{ label: 'Bubble sort', detail: 'O(n²)' }, { label: 'Merge sort' }],
+    },
+    {
+      type: 'cycle',
+      title: 'Life of a butterfly',
+      nodes: [{ label: 'Egg' }, { label: 'Larva' }, { label: 'Pupa' }, { label: 'Adult' }],
+    },
+    {
+      type: 'layers',
+      title: 'Computer',
+      layers: [{ label: 'Apps' }, { label: 'OS' }, { label: 'Hardware' }],
+    },
+    {
+      type: 'sequence',
+      title: 'Ordering food',
+      actors: ['Customer', 'Waiter', 'Kitchen'],
+      messages: [
+        { from: 'Customer', to: 'Waiter', label: 'Order' },
+        { from: 'waiter', to: 'kitchen', label: 'Ticket' },
+      ],
+    },
+    {
+      type: 'mindmap',
+      title: 'ML',
+      center: 'Machine learning',
+      branches: [{ label: 'Supervised', children: ['Regression'] }, { label: 'Unsupervised' }],
+    },
   ])('builds $type', (input) => {
     const v = buildVisual(input);
     expect(v.type).toBe(input.type);

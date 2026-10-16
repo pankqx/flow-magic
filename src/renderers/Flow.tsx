@@ -47,8 +47,23 @@ function Shape({ n, id }: { n: Node; id: string }) {
     case 'output': // pill with double border
       return (
         <g className="fm-node fm-node-output">
-          <rect x={x} y={y} width={NW} height={NH} rx={NH / 2} className="fm-shape" filter={`url(#${id}-glow)`} />
-          <rect x={x + 6} y={y + 6} width={NW - 12} height={NH - 12} rx={(NH - 12) / 2} className="fm-shape-inner" />
+          <rect
+            x={x}
+            y={y}
+            width={NW}
+            height={NH}
+            rx={NH / 2}
+            className="fm-shape"
+            filter={`url(#${id}-glow)`}
+          />
+          <rect
+            x={x + 6}
+            y={y + 6}
+            width={NW - 12}
+            height={NH - 12}
+            rx={(NH - 12) / 2}
+            className="fm-shape-inner"
+          />
         </g>
       );
     default:
@@ -94,7 +109,13 @@ export function FlowRenderer({ v, step, uid }: { v: FlowVisual; step: number; ui
             <path d={d} pathLength={1} className="fm-line fm-draw" markerEnd={`url(#${marker})`} />
             {e.label && (
               <g className="fm-edge-label">
-                <rect x={mx - e.label.length * 5.4 - 10} y={my - 16} width={e.label.length * 10.8 + 20} height={30} rx={15} />
+                <rect
+                  x={mx - e.label.length * 5.4 - 10}
+                  y={my - 16}
+                  width={e.label.length * 10.8 + 20}
+                  height={30}
+                  rx={15}
+                />
                 <text x={mx} y={my} textAnchor="middle" dominantBaseline="central">
                   {e.label}
                 </text>

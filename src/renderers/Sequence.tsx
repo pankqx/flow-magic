@@ -25,7 +25,14 @@ export function SequenceRenderer({ v, step, uid }: { v: SequenceVisual; step: nu
           <g key={a.id} className="fm-actor">
             <line x1={cx} x2={cx} y1={TOP + HEAD_H} y2={H - 10} className="fm-lifeline" />
             <rect x={cx - 110} y={TOP} width={220} height={HEAD_H} rx={16} className="fm-shape fm-node" />
-            <SvgText x={cx} y={TOP + HEAD_H / 2} text={a.label} maxChars={18} className="fm-label" maxLines={2} />
+            <SvgText
+              x={cx}
+              y={TOP + HEAD_H / 2}
+              text={a.label}
+              maxChars={18}
+              className="fm-label"
+              maxLines={2}
+            />
           </g>
         );
       })}
@@ -38,11 +45,22 @@ export function SequenceRenderer({ v, step, uid }: { v: SequenceVisual; step: nu
         return (
           <g key={m.id} className={`fm-msg ${a.className}`} style={a.style}>
             <circle cx={x1} cy={y} r={7} className="fm-dot" />
-            <path d={`M${x1 + dir * 10},${y} L${x2 - dir * 6},${y}`} pathLength={1} className="fm-line fm-draw" markerEnd={`url(#${marker})`} />
+            <path
+              d={`M${x1 + dir * 10},${y} L${x2 - dir * 6},${y}`}
+              pathLength={1}
+              className="fm-line fm-draw"
+              markerEnd={`url(#${marker})`}
+            />
             <text x={(x1 + x2) / 2} y={y - 18} textAnchor="middle" className="fm-msg-label fm-fade">
               {m.label}
             </text>
-            <text x={Math.min(x1, x2) - 0} y={y + 4} className="fm-step-num fm-fade" textAnchor="end" dx={-18}>
+            <text
+              x={Math.min(x1, x2) - 0}
+              y={y + 4}
+              className="fm-step-num fm-fade"
+              textAnchor="end"
+              dx={-18}
+            >
               {m.step}
             </text>
           </g>

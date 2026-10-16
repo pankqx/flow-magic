@@ -26,7 +26,11 @@ function prepare(source: ConceptSource): Prepared[] {
           const t = contentTokens(a);
           if (t.length) seen.set(t.join(' '), t);
         }
-        return { id: c.id, aliases: [...seen.values()], keywords: new Set(contentTokens(c.keywords.join(' '))) };
+        return {
+          id: c.id,
+          aliases: [...seen.values()],
+          keywords: new Set(contentTokens(c.keywords.join(' '))),
+        };
       })
       .sort((a, b) => (a.id < b.id ? -1 : 1));
     cache.set(source, p);
