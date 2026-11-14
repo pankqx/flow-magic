@@ -2,6 +2,8 @@
 
 For every AI coding agent (Claude Code, Codex, Cursor, Copilot, others) and human contributor. `CLAUDE.md` imports this file.
 
+Humans who want to understand the whole project from zero (stack, files, flows, decisions, interview prep): read [`GUIDE.md`](GUIDE.md).
+
 ## 1. What this project is
 
 A standalone web app that shows animated diagrams and pictures while a presenter talks, types or gestures. Pipeline: **speech/typed/gesture input → intent parser + deterministic matcher (+ optional AI) → validated visual descriptor → SVG renderer → presenter controls**. Scope: ADR-005.
@@ -35,24 +37,30 @@ npm run typecheck        # tsc --noEmit
 npm run lint             # eslint
 npm run format:check     # prettier
 npm test                 # vitest run (unit + component)
-npm run test:e2e         # playwright
+npm run test:e2e         # playwright (planned; script not added yet)
 npm run validate:content # Zod validation of content/concepts + matcher fixtures
 npm run check            # typecheck + lint + format:check + test + validate:content
 ```
 
-Until FM-101 lands, the only available check is `python tests/reference/validate_content.py`.
+`npm run check` runs typecheck + lint + format:check + tests. The Python reference check also works without Node: `python tests/reference/validate_content.py`.
 
 ## 5. Source layout and ownership
 
 ```
-src/domain/      types, Zod schemas, constants           (pure, no React)
-src/matcher/     normalise + match                        (pure, no React)
-src/session/     reducer, history, selectors              (pure, no React)
-src/renderers/   one SVG renderer per visual type         (pure of app state)
-src/ui/          components, layout, styles, keyboard
-src/content/     loader that imports content/concepts/*.json
+src/domain/      types, Zod schemas, visual helpers (maxStep, semanticProblems)   (pure, no React)
+src/matcher/     normalise + deterministic match                                 (pure, no React)
+src/session/     reducer, history, notices                                       (pure, no React)
+src/speech/      intent parser (pure) + useSpeech hook (Web Speech API)
+src/ai/          OpenRouter client, loose->strict descriptor builder, settings/spend/cache (localStorage)
+src/layout/      autoLayout for AI flow graphs (pure)
+src/pictures/    Wikipedia picture lookup
+src/vision/      camera + MediaPipe tasks, gesture interpreter (pure), face filters
+src/renderers/   one SVG renderer per visual type: Flow, Sequence, Cycle, Layers, Mindmap (+ list) (pure of app state)
+src/ui/          App, Stage, Drawers, useController, useCamera, prefs, CSS modules
+src/content/     catalog loader that imports content/concepts/*.json
+src/styles/      base + diagram CSS
 content/         curated data (humans own this; see rule 6.4)
-tests/fixtures/  fixed evaluation sets                    (see rule 6.4)
+tests/fixtures/  fixed evaluation sets                                           (see rule 6.4)
 ```
 
 Dependency direction: `ui → session → matcher → domain` and `ui → renderers → domain`. `domain` imports nothing from the app. Renderers never import `session` or `ui`.
@@ -69,7 +77,8 @@ When several agents work in parallel, each owns one directory per task (see `doc
 6. **Accessibility is part of done**: labels, visible focus, keyboard operation, `aria-live` for status, SVG `<title>`/`<desc>`, `prefers-reduced-motion`. See `docs/ACCESSIBILITY.md`.
 7. **Security**: no secrets in the repo or bundle; render untrusted strings as text only; keep CSP-friendly (no inline event handlers, no remote scripts).
 8. **Ambiguity**: if the answer is in `docs/OPEN_QUESTIONS.md`, use the stated default. Otherwise choose the smallest reversible option, record the assumption in the PR, and continue; ask only when the choice changes user-visible behavior.
-9. **Do not edit status to Verified yourself unless you attach command output** in `docs/STATUS.md` under a dated evidence entry.
+9. **Commit identity**: commit as `pankqx <pankqx@gmail.com>`. Do not add `Co-Authored-By` or any AI/tool trailer.
+10. **Do not edit status to Verified yourself unless you attach command output** in `docs/STATUS.md` under a dated evidence entry.
 
 ## 7. Definition of done
 
